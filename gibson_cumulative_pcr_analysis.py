@@ -1,16 +1,20 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
+"""
+Created on Mon Mar  3 09:56:26 2025
+
+10-11-2025
+PDR1 Cumulative PCR Analysis
+"""
 
 import pandas as pd
-import numpy as np
-from Bio import SeqIO
 import glob
 import os
 import matplotlib.pyplot as plt
 import seaborn as sns
 import random
 
-wkdir = '/home/alicia/Documents/antifungal_project/PDR1'
+wkdir = '/home/alicia-pageau/Documents/antifungal_project/PDR1'
 os.chdir(wkdir)
 
 codon_to_aa = {
@@ -46,7 +50,7 @@ def calc_nunique_refs(blist):
     refs = [ele for ele in blist if 'REF' in ele]
     return(len(set(refs)))
 
-fnames = glob.glob(f"{wkdir}/gibson/05_analyze/F*_*.csv")
+fnames = glob.glob(f"{wkdir}/gibson/05_analyze/F*_*.csv.gz")
 barcode_cov = 1
 
 # Main table gibson reads
@@ -60,7 +64,7 @@ for fname in fnames:
     M.append(dsub)
 
 dM = pd.concat(M, ignore_index=True)
-dM.to_csv("02_combine_results_"+str(barcode_cov)+".csv", sep=",", header=True, index=False)
+#dM.to_csv("02_combine_results_"+str(barcode_cov)+".csv", sep=",", header=True, index=False)
 
 df = dM.copy()
 df['mutation_aa'] = df['mutation'].map(codon_to_aa)
@@ -79,7 +83,7 @@ dout2 = dgroup.groupby(['Fragment','pcr','ref_codon','mut_codon','mutation','mut
     n_barcodes_2 = ('barcode','count'),
     n_reads = ('n_reads','sum')).reset_index()
 
-dout2.to_csv('02_combine_results_mutations_min' + str(barcode_cov) + '.tsv', sep='\t', header=True, index=False)
+#dout2.to_csv('02_combine_results_mutations_min' + str(barcode_cov) + '.tsv', sep='\t', header=True, index=False)
 
 dc = dout2.copy()
 dc['mutation_aa'] = dc['mutation'].map(codon_to_aa)
@@ -166,7 +170,7 @@ for pcr_set in S:
     B.append(dM)
     
 dB = pd.concat(B, ignore_index=True)
-dB.to_csv("10_analyze_cumulative_barcodes_"+barcode_cov+"_aa.csv", sep=",", header=True, index=False)
+#dB.to_csv("10_analyze_cumulative_barcodes_"+barcode_cov+"_aa.csv", sep=",", header=True, index=False)
 
 # Barcode diversity (mutation in aa)
 n=0
@@ -204,7 +208,7 @@ for pcr_set in S:
     Z.append(dD)
     
 dZ = pd.concat(Z, ignore_index=True)
-dZ.to_csv("10_analyze_cumulative_barcodes_diversity_"+barcode_cov+"_aa.csv", sep=",", header=True, index=False)   
+#dZ.to_csv("10_analyze_cumulative_barcodes_diversity_"+barcode_cov+"_aa.csv", sep=",", header=True, index=False)   
 
 # Combine results
 dC = pd.merge(dB, dZ, on = ['Fragment','n_pcr','pcr_set'], how = 'left')
@@ -217,21 +221,23 @@ dC.loc[dC['Fragment']=='F13','nclones_bp']= dC['nclones']/75
 dC.loc[dC['Fragment']=='F43','nclones_bp']= dC['nclones']/54
 dC['nclones_bp'] = dC['nclones_bp'].round(0).astype('Int64')
 
-# PLOT
+
+# PLOT review
 sns.set_style("whitegrid")
-fig, (ax1, ax2) = plt.subplots(2, 1, figsize = (8, 5.33))
+fig, (ax1, ax2) = plt.subplots(1, 2, figsize = (13, 2.66))
 
-sns.lineplot(data = dC[dC['Fragment'] == 'F13'], x = 'nclones_bp', y = 'perc', ax=ax1, label="% informative barcodes", errorbar="ci")
-sns.lineplot(data = dC[dC['Fragment'] == 'F13'], x = 'nclones_bp', y = 'perc_mutations', ax=ax1, label = "% mutation coverage", errorbar="ci")
-sns.lineplot(data = dC[dC['Fragment'] == 'F13'], x = 'nclones_bp', y = '>4', ax=ax1, label = "% barcode diversity for mutations\nrepresented by >4 barcodes", errorbar="ci")
-sns.lineplot(data = dC[dC['Fragment'] == 'F13'], x = 'nclones_bp', y = '>9', ax=ax1, label = "% barcode diversity for mutations\nrepresented by >9 barcodes", errorbar="ci")
+sns.lineplot(data = dC[dC['Fragment'] == 'F13'], x = 'nclones_bp', marker='o', y = 'perc', ax=ax1, label="% informative barcodes", errorbar="ci")
+sns.lineplot(data = dC[dC['Fragment'] == 'F13'], x = 'nclones_bp', marker='o', y = 'perc_mutations', ax=ax1, label = "% mutation coverage", errorbar="ci")
+sns.lineplot(data = dC[dC['Fragment'] == 'F13'], x = 'nclones_bp', marker='o', y = '>4', ax=ax1, label = "% barcode diversity for mutations\nrepresented by #barcodes >4", errorbar="ci")
+sns.lineplot(data = dC[dC['Fragment'] == 'F13'], x = 'nclones_bp', marker='o', y = '>9', ax=ax1, label = "% barcode diversity for mutations\nrepresented by #barcodes >9", errorbar="ci")
 
-sns.lineplot(data = dC[dC['Fragment'] == 'F43'], x = 'nclones_bp', y = 'perc', ax=ax2, label="% informative barcodes", errorbar="ci")
-sns.lineplot(data = dC[dC['Fragment'] == 'F43'], x = 'nclones_bp', y = 'perc_mutations', ax=ax2, label = "% mutation coverage", errorbar="ci")
-sns.lineplot(data = dC[dC['Fragment'] == 'F43'], x = 'nclones_bp', y = '>4', ax=ax2, label = "% barcode diversity for mutations\nrepresented by >4 barcodes", errorbar="ci")
-sns.lineplot(data = dC[dC['Fragment'] == 'F43'], x = 'nclones_bp', y = '>9', ax=ax2, label = "% barcode diversity for mutations\nrepresented by >9 barcodes", errorbar="ci")
+sns.lineplot(data = dC[dC['Fragment'] == 'F43'], x = 'nclones_bp', marker='o', y = 'perc', ax=ax2, label="% informative barcodes", errorbar="ci")
+sns.lineplot(data = dC[dC['Fragment'] == 'F43'], x = 'nclones_bp', marker='o', y = 'perc_mutations', ax=ax2, label = "% mutation coverage", errorbar="ci")
+sns.lineplot(data = dC[dC['Fragment'] == 'F43'], x = 'nclones_bp', marker='o', y = '>4', ax=ax2, label = "% barcode diversity for mutations\nrepresented by #barcodes >4", errorbar="ci")
+sns.lineplot(data = dC[dC['Fragment'] == 'F43'], x = 'nclones_bp', marker='o', y = '>9', ax=ax2, label = "% barcode diversity for mutations\nrepresented by #barcodes >9", errorbar="ci")
 
 ax1.set_title("F13",fontsize=12)
+ax1.legend().remove()
 ax2.set_title("F43",fontsize=12)
 
 ax1.set_xlabel('Number of transformants per base pair (bp)', fontsize=12)
@@ -245,8 +251,7 @@ ax2.set_ylim(10,100)
 ax1.set_xlim(0,1000)
 ax2.set_xlim(0,1000)
 
-sns.move_legend(ax1, "upper left", bbox_to_anchor=(1, 1))
 sns.move_legend(ax2, "upper left", bbox_to_anchor=(1, 1))
 
 plt.tight_layout()
-plt.savefig("10_analyze_cumulative_barcodes_vs_mutations_vs_diversity_100_random_nbclones_lineplot_1_aa.png", dpi=150)
+plt.show()

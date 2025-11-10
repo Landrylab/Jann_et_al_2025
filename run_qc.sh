@@ -3,7 +3,7 @@
 # Parse command-line arguments
 INPUT_DIR=${1:-"./01_data"}
 OUTPUT_DIR=${2:-"./02_QC/fastqc"}
-REPORT_DIR=${3:-"./02_QC/_multiqc"}
+REPORT_DIR=${3:-"./02_QC/multiqc"}
 
 # Create output directories if they don't exist
 mkdir -p "$OUTPUT_DIR"
