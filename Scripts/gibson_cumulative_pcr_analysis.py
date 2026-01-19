@@ -176,11 +176,9 @@ dB = pd.concat(B, ignore_index=True)
 n=0
 Z = []
 for pcr_set in S:
-    print(n)
     D = []
     pcrs = []
     for npcr in range(len(pcr_set)):
-        #print(pcr)
         pcr = pcr_set[npcr]
         pcrs.append(pcr)
         df_ = df[df['pcr'].isin(pcrs)]
@@ -211,18 +209,22 @@ dZ = pd.concat(Z, ignore_index=True)
 #dZ.to_csv("10_analyze_cumulative_barcodes_diversity_"+barcode_cov+"_aa.csv", sep=",", header=True, index=False)   
 
 # Combine results
+dB = pd.read_csv(f"10_analyze_cumulative_barcodes_{barcode_cov}_aa.csv")
+dZ = pd.read_csv(f"10_analyze_cumulative_barcodes_diversity_{barcode_cov}_aa.csv")
 dC = pd.merge(dB, dZ, on = ['Fragment','n_pcr','pcr_set'], how = 'left')
 dC.loc[dC['Fragment']=='F1','nclones_pcr']=5000  
 dC.loc[dC['Fragment']=='F13','nclones_pcr']=5000  
 dC.loc[dC['Fragment']=='F43','nclones_pcr']=7500
+dC['n_pcr'] = dC['n_pcr'] + 1 #n_pcr was 0-based...
 dC['nclones']= dC['n_pcr']*dC['nclones_pcr']
 dC.loc[dC['Fragment']=='F1','nclones_bp']= dC['nclones']/75
 dC.loc[dC['Fragment']=='F13','nclones_bp']= dC['nclones']/75
-dC.loc[dC['Fragment']=='F43','nclones_bp']= dC['nclones']/54
+dC.loc[dC['Fragment']=='F43','nclones_bp']= dC['nclones']/51 #nt du codon STOP retiré!
 dC['nclones_bp'] = dC['nclones_bp'].round(0).astype('Int64')
+#dC = dC[dC['Fragment'] != 'F1']
+#dC.to_csv('/home/alicia-pageau/Documents/antifungal_project/PDR1/00_scripts/Jann_et_al_2025/Upadated_scripts_after_review_11_2025/Figure1/cumulative_barcodes_diversity_analysis.csv')
 
-
-# PLOT review
+# PLOT
 sns.set_style("whitegrid")
 fig, (ax1, ax2) = plt.subplots(1, 2, figsize = (13, 2.66))
 
@@ -248,8 +250,8 @@ ax2.set_ylabel('Percentage (%)',fontsize=12)
 
 ax1.set_ylim(10,100)
 ax2.set_ylim(10,100)
-ax1.set_xlim(0,1000)
-ax2.set_xlim(0,1000)
+ax1.set_xlim(50,1000)
+ax2.set_xlim(50,1000)
 
 sns.move_legend(ax2, "upper left", bbox_to_anchor=(1, 1))
 

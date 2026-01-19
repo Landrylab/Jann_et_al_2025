@@ -640,8 +640,9 @@ sns.boxplot(
     color='lightgray'
 )
 plt.ylim(0, 1)
-plt.xlabel('Number of barcodes', fontsize = 14)
-plt.ylabel('Correlation coefficient\n(DMS F13 sequence Vs DMS barcode)', fontsize = 14)
+plt.tick_params(axis='both', which='major', labelsize=16)
+plt.xlabel('Number of barcodes', fontsize = 20)
+plt.ylabel('Correlation coefficient\n(DMS F13 sequence Vs DMS barcode)', fontsize = 20)
 plt.grid(True)
 plt.tight_layout()
 plt.show()

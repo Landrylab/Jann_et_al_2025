@@ -1,0 +1,25 @@
+,mutation,species,drug,confidence score,Strongest resistance evidence reported,Strongest sensitivity evidence reported,convert_pos,wt_AA,position,alt_AA,scer_position,scer_wt_aa
+0,M307I,Saccharomyces paradoxus,['4-Nitroquinoline' 'Fluconazole' 'Itraconazole' 'Voriconazole'],1.6,1.0,,278,M,307,I,308,M
+1,M307T,Saccharomyces paradoxus,['4-Nitroquinoline'],4.0,4.0,,278,M,307,T,308,M
+2,I307S,Saccharomyces cerevisiae,['Clotrimazole'],4.0,4.0,,277,I,307,S,307,I
+3,K302N,Saccharomyces cerevisiae,['Fluconazole'],4.0,4.0,,272,K,302,N,302,K
+4,K302Q,Saccharomyces cerevisiae,['Cycloheximide' 'Oligomycin' 'Ketoconazole'],1.0,1.0,,272,K,302,Q,302,K
+5,L309S,Saccharomyces cerevisiae,['Clotrimazole'],1.0,1.0,,279,L,309,S,309,L
+6,L309V,Saccharomyces cerevisiae,['Fluconazole'],4.0,4.0,,279,L,309,V,309,L
+7,M308I,Saccharomyces cerevisiae,"['Fluconazole' '4-Nitroquinoline' 'Itraconazole' 'Voriconazole' 'Cycloheximide' 'Oligomycin' 'Ketoconazole']""",4.0,3.625,-8.0,278,M,308,I,308,M
+8,R310S,Saccharomyces cerevisiae,['Clotrimazole'],4.0,4.0,,280,R,310,S,310,R
+10,T304N,Saccharomyces cerevisiae,['Clotrimazole'],4.0,4.0,,274,T,304,N,304,T
+11,Y306C,Saccharomyces cerevisiae,['Clotrimazole'],4.0,4.0,,276,Y,306,C,306,Y
+12,Y306H,Saccharomyces cerevisiae,['Clotrimazole'],4.0,4.0,,276,Y,306,H,306,Y
+13,E369K,Nakaseomyces glabrata,['Fluconazole'],8.0,8.0,,273,E,369,K,303,E
+14,F377I,Nakaseomyces glabrata,['Fluconazole'],8.0,8.0,,281,F,377,I,311,F
+15,I373V,Nakaseomyces glabrata,['Fluconazole'],8.0,8.0,,277,I,373,V,307,I
+16,I378T,Nakaseomyces glabrata,['Fluconazole'],8.0,8.0,,282,I,378,T,312,F
+18,L375P,Nakaseomyces glabrata,['Fluconazole'],8.0,8.0,,279,L,375,P,309,L
+19,R376Q,Nakaseomyces glabrata,['Fluconazole' 'Echinocandin'],8.0,8.0,,280,R,376,Q,310,R
+20,R376W,Nakaseomyces glabrata,['Fluconazole' 'Voriconazole' 'Fluphenazine' 'CWHM-974'],4.888888888888889,2.555555555555556,,280,R,376,W,310,R
+21,S391L,Nakaseomyces glabrata,['Fluconazole'],8.0,8.0,,295,S,391,L,325,S
+23,T370I,Nakaseomyces glabrata,['Fluconazole' 'Voriconazole' 'Echinocandin'],8.0,8.0,,274,T,370,I,304,T
+24,Y372C,Nakaseomyces glabrata,['Clotrimazole' 'Fluconazole' 'Posaconazole' 'Voriconazole'],7.0,7.0,,276,Y,372,C,306,Y
+25,Y372H,Nakaseomyces glabrata,"['Fluconazole' 'Isavuconazole' 'Itraconazole' 'Posaconazole' 'Voriconazole']""",8.0,8.0,,276,Y,372,H,306,Y
+26,Y372N,Nakaseomyces glabrata,['Fluconazole'],8.0,8.0,,276,Y,372,N,306,Y
