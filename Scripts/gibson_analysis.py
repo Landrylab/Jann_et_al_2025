@@ -42,7 +42,6 @@ os.chdir(wkdir)
 
 #%% Functions
 def check_codons(seq1, seq2):
-    n_codons = np.floor(len(seq1)/3)
     changed_codons = []
     referen_codons = []
     for codon in range(0, len(seq1), 3):
@@ -402,7 +401,7 @@ nb_informative_barcode_excl_WT = (
     .agg(nb_informative_barcode_excl_WT=('barcode_reads', 'sum')).reset_index()
 )
 
-## Get % WT reads
+# Get % WT reads
 wt_count = rM_read_depth.groupby(['Fragment','mutation']).agg(read_per_mutation = ('mutation','count')).reset_index()
 pourcent_wt = (
     wt_count[wt_count['mutation'] == 'REF']
@@ -424,10 +423,9 @@ informative_barcode_stat = pourcent_informative_barcode.merge(
 )
 
 informative_barcode_stat['%_barcode_WT'] = informative_barcode_stat['%_informative_barcode'] - informative_barcode_stat['%_informative_barcode_excl_WT']
-informative_barcode_stat.to_csv(f"{wkdir}/gibson/05_analyze/gibson_informative_barcodes_stats.csv")
+#informative_barcode_stat.to_csv(f"{wkdir}/gibson/05_analyze/gibson_informative_barcodes_stats.csv")
 
-
-#%% Compute uniformity (codon-level)
+#%% Compute barcode diversity and uniformity (codon)
 rM_read_depth=pd.read_csv(f"{wkdir}/gibson_all_fragments_sequencing_read_20102025.csv")
 
 barcode_count = rM_read_depth.groupby(['Fragment', 'barcode']).agg(barcode_reads = ('core','nunique')).reset_index()

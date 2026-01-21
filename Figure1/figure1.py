@@ -113,13 +113,9 @@ def aa_label_yaxis(aa_list):
             start = i
     return runs
 
-# %% Import files
-df_ref = pd.read_csv('ref.csv', index_col=0)
-gibson_div = pd.read_csv('gibson_barcode_diversity.csv', index_col=0)
-gg_div = pd.read_csv('golden_gate_barcode_diversity.csv', index_col=0)
-cumul_div = pd.read_csv('cumulative_barcodes_diversity_analysis.csv', index_col=0)
-
 # %% Figure 1B - Cumulative barcode diversity analysis
+cumul_div = pd.read_csv('S1_data.csv')
+
 fig, (ax1, ax2) = plt.subplots(1, 2, figsize = (13, 2.66), dpi = 300)
 ax1.grid(True, color="lightgray", linewidth=1, alpha=0.8)
 ax2.grid(True, color="lightgray", linewidth=1, alpha=0.8)
@@ -155,6 +151,9 @@ plt.tight_layout()
 plt.savefig("figure_1B.png", dpi=300, bbox_inches="tight")
 
 # %% Figure 1C - Gibson - Heatmaps nb barcodes per mutated AA unclipped
+df_ref = pd.read_csv('ref.csv')
+gibson_div = pd.read_csv('S2_data.csv')
+
 div_aa = gibson_div[['Fragment', 'ref_aa', 'position', 'mutation_aa','barcode_per_mut_aa']].drop_duplicates()
 div_aa_frag = div_aa[(div_aa['Fragment'] == 'F13') | (div_aa['Fragment'] == 'F43')]
 fragments = div_aa_frag['Fragment'].unique()
@@ -251,6 +250,9 @@ for start in range(0, num_fragments, nplot):
 
     
 # %% Figure 1D - Golden Gate - Heatmaps nb barcodes per mutated AA unclipped
+df_ref = pd.read_csv('ref.csv')
+gg_div = pd.read_csv('S3_data.csv')
+
 div_aa = gg_div[['Fragment', 'ref_aa', 'position', 'mutation_aa','barcode_per_mut_aa']].drop_duplicates()
 div_aa_frag = div_aa[(div_aa['Fragment'] == 'F13') | (div_aa['Fragment'] == 'F43')]
 fragments = div_aa_frag['Fragment'].unique()

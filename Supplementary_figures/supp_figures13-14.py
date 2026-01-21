@@ -19,16 +19,24 @@ os.chdir(wkdir)
 aa_order = ["*", "P", "G", "C", "Q", "N", "T", "S", "E", "D",
             "K", "H", "R", "W", "Y", "F", "M", "L", "I", "V", "A"]
 
-# %% Import files
-
-# DMS gyoza results
-barcodes = pd.read_csv("gyoza_barcodes_select_coeff_median.csv", index_col=0)
-F13 = pd.read_csv("gyoza_F13_select_coeff_median.csv", index_col=0)
-
-# Barcode saturation
-barcode_div_sat = pd.read_csv('barcode_diversity_saturation_analysis.csv', index_col=0)
 
 # %% Supp figure 13 - Correlation all-usable barcodes
+F13 = pd.read_csv("S5_data.csv")
+F13 = F13.loc[F13['confidence_score'] == 1] 
+F13 = F13.loc[F13['aa_pos'] != 'not-applicable']
+F13['aa_pos'] = F13['aa_pos'].astype(int)
+F13 = F13.loc[F13['aa_pos'].isin(range(301,326))]
+F13 = F13[F13['Replicate']=='A']
+F13 = F13.groupby(['Drug', 'aa_pos', 'alt_aa', 'Nham_aa', 'mutation_type'], as_index=False)['s_T2_T0'].median()
+
+barcodes = pd.read_csv("S6_data.csv",)
+barcodes = barcodes.loc[barcodes['confidence_score'] == 1] 
+barcodes = barcodes.loc[barcodes['aa_pos'] != 'not-applicable']
+barcodes['aa_pos'] = barcodes['aa_pos'].astype(int)
+barcodes = barcodes.loc[barcodes['aa_pos'].isin(range(301,326))]
+barcodes['nbarcodes'] = barcodes.groupby(['Drug','aa_pos','alt_aa'])['barcode'].transform('nunique')
+barcodes = barcodes.groupby(['Drug', 'aa_pos', 'alt_aa', 'Nham_aa', 'mutation_type', 'nbarcodes'], as_index=False)['s_T2_T0'].median()
+
 data = pd.merge(barcodes,F13, on = ['Drug', 'aa_pos', 'alt_aa', 'Nham_aa', 'mutation_type'])
 data = data[data['Drug']=='POSA']
 
@@ -59,9 +67,12 @@ plt.ylabel("Selection coefficient (PDR1 F13 sequence)")
 plt.axis("equal")
 plt.legend(title="Number of barcode\nper mutation")
 plt.tight_layout()
-plt.savefig("supp_figure_13.png", dpi=300, bbox_inches="tight")
+plt.show()
+#plt.savefig("supp_figure_13.png", dpi=300, bbox_inches="tight")
 
 # %% Supp figure 14 - Barcodes saturation analysis diversity impact
+barcode_div_sat = pd.read_csv('S9_data.csv')
+
 plt.figure(figsize=(9, 6.75), dpi=300)
 ax = sns.pointplot(
     data=barcode_div_sat,

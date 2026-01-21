@@ -114,13 +114,11 @@ def aa_label_yaxis(aa_list):
             start = i
     return runs
 
-# %% Import files
-df_ref = pd.read_csv('ref.csv', index_col=0)
-gibson_div = pd.read_csv('gibson_barcode_diversity.csv', index_col=0)
-gg_div = pd.read_csv('golden_gate_barcode_diversity.csv', index_col=0)
-uniformity_df = pd.read_csv('uniformity.csv', index_col=0)
 
 # %% Supp figure 1 - Gibson - Heatmaps nb barcodes per mutated AA clipped
+df_ref = pd.read_csv('ref.csv')
+gibson_div = pd.read_csv('S2_data.csv')
+
 div_aa = gibson_div[['Fragment', 'ref_aa', 'position', 'mutation_aa','barcode_per_mut_aa']].drop_duplicates()
 div_aa_frag = div_aa[(div_aa['Fragment'] == 'F13') | (div_aa['Fragment'] == 'F43')]
 fragments = div_aa_frag['Fragment'].unique()
@@ -216,6 +214,9 @@ for start in range(0, num_fragments, nplot):
     plt.close(fig)
 
 # %% Supp figure 2 - Golden Gate - Heatmaps nb barcodes per mutated AA clipped
+df_ref = pd.read_csv('ref.csv')
+gg_div = pd.read_csv('S3_data.csv')
+
 div_aa = gg_div[['Fragment', 'ref_aa', 'position', 'mutation_aa','barcode_per_mut_aa']].drop_duplicates()
 div_aa_frag = div_aa[(div_aa['Fragment'] == 'F13') | (div_aa['Fragment'] == 'F43')]
 fragments = div_aa_frag['Fragment'].unique()
@@ -311,6 +312,9 @@ for start in range(0, num_fragments, nplot):
     plt.close(fig)
     
 # %% Supp figure 3 - Gibson - Heatmaps nb barcodes per mutated codon unclipped
+df_ref = pd.read_csv('ref.csv')
+gibson_div = pd.read_csv('S2_data.csv')
+
 div_frag = gibson_div[(gibson_div['Fragment'] == 'F13') | (gibson_div['Fragment'] == 'F43')]
 fragments = div_frag['Fragment'].unique()
 num_fragments = len(fragments)
@@ -438,6 +442,9 @@ for start in range(0, num_fragments, nplot):
     plt.close(fig)
 
 # %% Supp figure 4 - Golden Gate - Heatmaps nb barcodes per mutated codon unclipped
+df_ref = pd.read_csv('ref.csv')
+gg_div = pd.read_csv('S3_data.csv')
+
 div_frag = gg_div[(gg_div['Fragment'] == 'F13') | (gg_div['Fragment'] == 'F43')]
 fragments = div_frag['Fragment'].unique()
 num_fragments = len(fragments)
@@ -565,6 +572,9 @@ for start in range(0, num_fragments, nplot):
     plt.close(fig)
 
 # %% Supp figure 5 - Gibson - Heatmap nb barcodes per mutated AA unclipped whole PDR1 sequence
+df_ref = pd.read_csv('ref.csv')
+gibson_div = pd.read_csv('S2_data.csv')
+
 div_aa = gibson_div[['Fragment', 'ref_aa', 'position', 'mutation_aa','barcode_per_mut_aa']].drop_duplicates()
 df = div_aa.pivot(index='mutation_aa', columns='position', values='barcode_per_mut_aa')
 df = df.loc[aa_order]
@@ -630,6 +640,9 @@ for idx, row in df_ref.iterrows():
 plt.savefig("supp_figure_5.png", dpi=225, bbox_inches="tight")
 
 # %% Supp figure 6 - Golden Gate - Heatmap nb barcodes per mutated AA unclipped whole PDR1 sequence
+df_ref = pd.read_csv('ref.csv')
+gg_div = pd.read_csv('S3_data.csv')
+
 div_aa = gg_div[['Fragment', 'ref_aa', 'position', 'mutation_aa','barcode_per_mut_aa']].drop_duplicates()
 df = div_aa.pivot(index='mutation_aa', columns='position', values='barcode_per_mut_aa')
 df = df.loc[aa_order]
@@ -695,6 +708,9 @@ for idx, row in df_ref.iterrows():
 plt.savefig("supp_figure_6.png", dpi=225, bbox_inches="tight")
 
 # %% Supp figure 7 - Gibson - Heatmap nb barcodes per mutated codon unclipped whole PDR1 sequence
+df_ref = pd.read_csv('ref.csv')
+gibson_div = pd.read_csv('S2_data.csv')
+
 df = gibson_div.pivot(index='mutation', columns='position', values='barcode_per_mut')
 df = df[~df.index.isna()]
 df = df.fillna(0)
@@ -769,6 +785,9 @@ for idx, row in df_ref.iterrows():
 plt.savefig("supp_figure_7.png", dpi=225, bbox_inches="tight")
 
 # %% Supp figure 8 - Golden Gate - Heatmap nb barcodes per mutated codon unclipped whole PDR1 sequence
+df_ref = pd.read_csv('ref.csv')
+gg_div = pd.read_csv('S3_data.csv')
+
 df = gg_div.pivot(index='mutation', columns='position', values='barcode_per_mut')
 df = df[~df.index.isna()]
 df = df.fillna(0)
@@ -842,7 +861,65 @@ for idx, row in df_ref.iterrows():
 # Save plot
 plt.savefig("supp_figure_8.png", dpi=225, bbox_inches="tight")
 
-# %% Supp figure 9 - Gini boxplot
+# %% Supp figure 9 - Distribution nb barcodes per mutated AA
+gibson_div = pd.read_csv('S2_data.csv')
+gg_div = pd.read_csv('S3_data.csv')
+
+palette = {
+    'F13': '#666666',  # gray
+    'F43': '#56B4E9',  # blue
+}
+
+sns.set(rc={'axes.facecolor': 'white',
+ 'axes.edgecolor': 'black',
+ 'axes.grid': True,
+ 'figure.facecolor': 'white',
+ 'grid.color': '#b0b0b0',
+ 'xtick.direction': 'out',
+ 'ytick.direction': 'out',
+ 'xtick.bottom': True,
+ 'ytick.left': True,
+ })
+
+# Gibson
+div_aa = gibson_div[['Fragment', 'ref_aa', 'position', 'mutation_aa','barcode_per_mut_aa']].drop_duplicates()
+div_aa_frag = div_aa[(div_aa['Fragment'] == 'F13') | (div_aa['Fragment'] == 'F43')]
+
+plt.figure(figsize=(10, 6))
+sns.histplot(
+    data=div_aa_frag,
+    x="barcode_per_mut_aa",
+    hue="Fragment",
+    binwidth=2,
+    alpha=0.5,
+    palette=palette
+)
+plt.xticks(range(0, int(div_aa_frag["barcode_per_mut_aa"].max()) + 10, 10))
+plt.xlabel("Number of barcode per mutation (AA)")
+plt.ylabel("Count")
+plt.savefig("supp_figure_9_gibson.png", dpi=300, bbox_inches="tight")
+
+# Golden Gate
+div_aa = gg_div[['Fragment', 'ref_aa', 'position', 'mutation_aa','barcode_per_mut_aa']].drop_duplicates()
+div_aa_frag = div_aa[(div_aa['Fragment'] == 'F13') | (div_aa['Fragment'] == 'F43')]
+
+plt.figure(figsize=(10, 6))
+sns.histplot(
+    data=div_aa_frag,
+    x="barcode_per_mut_aa",
+    hue="Fragment",
+    binwidth=2,
+    alpha=0.5,
+    palette=palette
+)
+plt.xticks(range(0, int(div_aa_frag["barcode_per_mut_aa"].max()) + 10, 10))
+plt.xlabel("Number of barcode per mutation (AA)")
+plt.ylabel("Count")
+plt.savefig("supp_figure_9_golden_gate.png", dpi=300, bbox_inches="tight")
+
+# %% Supp figure 10 - Gini boxplot
+uniformity_df = pd.read_csv('S4_data.csv')
+
 plt.figure(figsize=(3, 6), dpi=300)
 sns.boxplot(data=uniformity_df, x='exp', y='Gini',fill=False, 
             color='black',fliersize=0, order=['gibson','golden gate'])
@@ -853,10 +930,12 @@ plt.ylim(0,1)
 plt.xticks(ticks=[0, 1], labels=["Gibson", "Golden Gate"])
 plt.ylabel('Uniformity (Gini coefficient)')
 plt.xlabel('')
-plt.savefig("supp_figure_9.png", dpi=300, bbox_inches="tight")
+plt.savefig("supp_figure_10.png", dpi=300, bbox_inches="tight")
 
 
-# %% Supp figure 10 - Uniformity boxplot
+# %% Supp figure 11 - Uniformity boxplot
+uniformity_df = pd.read_csv('S4_data.csv')
+
 plt.figure(figsize=(3, 6), dpi=300)
 sns.boxplot(data=uniformity_df, x='exp', y='LogDiff',fill=False, 
             color='black',fliersize=0, order=['gibson','golden gate'])
@@ -867,75 +946,5 @@ plt.ylim(0)
 plt.xticks(ticks=[0, 1], labels=["Gibson", "Golden Gate"])
 plt.ylabel('Uniformity (LogDiff)')
 plt.xlabel('')
-plt.savefig("supp_figure_10.png", dpi=300, bbox_inches="tight")
+plt.savefig("supp_figure_11.png", dpi=300, bbox_inches="tight")
 
-# %% Supp figure 11 - Distribution nb barcodes per mutated AA
-# Gibson
-div_aa = gibson_div[['Fragment', 'ref_aa', 'position', 'mutation_aa','barcode_per_mut_aa']].drop_duplicates()
-div_aa_frag = div_aa[(div_aa['Fragment'] == 'F13') | (div_aa['Fragment'] == 'F43')]
-
-palette = {
-    'F13': '#666666',  # gray
-    'F43': '#56B4E9',  # blue
-}
-
-plt.figure(figsize=(10, 6))
-sns.set(rc={'axes.facecolor': 'white',
- 'axes.edgecolor': 'black',
- 'axes.grid': True,
- 'figure.facecolor': 'white',
- 'grid.color': '#b0b0b0',
- 'xtick.direction': 'out',
- 'ytick.direction': 'out',
- 'xtick.bottom': True,
- 'ytick.left': True,
- })
-
-sns.histplot(
-    data=div_aa_frag,
-    x="barcode_per_mut_aa",
-    hue="Fragment",
-    binwidth=2,
-    alpha=0.5,
-    palette=palette
-)
-
-plt.xticks(range(0, int(div_aa_frag["barcode_per_mut_aa"].max()) + 10, 10))
-plt.xlabel("Number of barcode per mutation (AA)")
-plt.ylabel("Count")
-plt.savefig("supp_figure_11_gibson.png", dpi=300, bbox_inches="tight")
-
-# Golden Gate
-div_aa = gg_div[['Fragment', 'ref_aa', 'position', 'mutation_aa','barcode_per_mut_aa']].drop_duplicates()
-div_aa_frag = div_aa[(div_aa['Fragment'] == 'F13') | (div_aa['Fragment'] == 'F43')]
-
-palette = {
-    'F13': '#666666',  # gray
-    'F43': '#56B4E9',  # blue
-}
-
-plt.figure(figsize=(10, 6))
-sns.set(rc={'axes.facecolor': 'white',
- 'axes.edgecolor': 'black',
- 'axes.grid': True,
- 'figure.facecolor': 'white',
- 'grid.color': '#b0b0b0',
- 'xtick.direction': 'out',
- 'ytick.direction': 'out',
- 'xtick.bottom': True,
- 'ytick.left': True,
- })
-
-sns.histplot(
-    data=div_aa_frag,
-    x="barcode_per_mut_aa",
-    hue="Fragment",
-    binwidth=2,
-    alpha=0.5,
-    palette=palette
-)
-
-plt.xticks(range(0, int(div_aa_frag["barcode_per_mut_aa"].max()) + 10, 10))
-plt.xlabel("Number of barcode per mutation (AA)")
-plt.ylabel("Count")
-plt.savefig("supp_figure_11_golden_gate.png", dpi=300, bbox_inches="tight")
