@@ -1,0 +1,7 @@
+Species,Drug,Fragment,Replicate,Timepoint,Nb_gen
+SC,CTL,F13,A,T1,4.31
+SC,CTL,F13,A,T2,8.62
+SC,POSA,F13,A,T1,4.16
+SC,POSA,F13,A,T2,8.05
+SC,NQO,F13,A,T1,4.19
+SC,NQO,F13,A,T2,8.51

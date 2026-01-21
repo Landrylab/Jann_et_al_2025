@@ -12,8 +12,9 @@ import seaborn as sns
 from scipy.stats import pearsonr
 import os
 
-wkdir = '/home/alicia-pageau/Documents/antifungal_project/PDR1/00_scripts/Jann_et_al_2025/Upadated_scripts_after_review_11_2025/Supplementary_figures/'
-os.chdir(wkdir)
+# Change working directory to the script folder
+script_dir = os.path.dirname(os.path.abspath(__file__))
+os.chdir(script_dir)
 
 # aa order per properties for heatmaps
 aa_order = ["*", "P", "G", "C", "Q", "N", "T", "S", "E", "D",

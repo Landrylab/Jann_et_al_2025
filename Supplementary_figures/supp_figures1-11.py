@@ -18,8 +18,9 @@ from matplotlib.colors import ListedColormap
 from matplotlib.ticker import FixedLocator
 from matplotlib.font_manager import FontProperties
 
-wkdir = '/home/alicia-pageau/Documents/antifungal_project/PDR1/00_scripts/Jann_et_al_2025/Upadated_scripts_after_review_11_2025/Supplementary_figures/'
-os.chdir(wkdir)
+# Change working directory to the script folder
+script_dir = os.path.dirname(os.path.abspath(__file__))
+os.chdir(script_dir)
 
 # aa order per properties for heatmaps
 aa_order = ["*", "P", "G", "C", "Q", "N", "T", "S", "E", "D",
@@ -156,6 +157,7 @@ for start in range(0, num_fragments, nplot):
                      .pivot(index='mutation_aa', columns='position', values='barcode_per_mut_aa'
         ))
         df_subset = df_subset.loc[aa_order]
+        df_subset = df_subset.fillna(0)
         
         # Get % of clipped barcodes
         barcode_counts = df_subset.fillna(0).values
@@ -254,6 +256,7 @@ for start in range(0, num_fragments, nplot):
                      .pivot(index='mutation_aa', columns='position', values='barcode_per_mut_aa'
         ))
         df_subset = df_subset.loc[aa_order]
+        df_subset = df_subset.fillna(0)
         
         # Get % of clipped barcodes
         barcode_counts = df_subset.fillna(0).values
@@ -339,6 +342,7 @@ for start in range(0, num_fragments, nplot):
         df_subset = div_frag[div_frag['Fragment'] == fragment].pivot(
             index=['mutation'], columns='position', values='barcode_per_mut'
         )
+        df_subset = df_subset.fillna(0)
         
         # Order df_subset rows by AA 
         aa_for_row = pd.Series(df_subset.index).map(lambda c: codon_to_aa.get(str(c).upper()))
@@ -469,6 +473,7 @@ for start in range(0, num_fragments, nplot):
         df_subset = div_frag[div_frag['Fragment'] == fragment].pivot(
             index=['mutation'], columns='position', values='barcode_per_mut'
         )
+        df_subset = df_subset.fillna(0)
         
         # Order df_subset rows by AA 
         aa_for_row = pd.Series(df_subset.index).map(lambda c: codon_to_aa.get(str(c).upper()))
