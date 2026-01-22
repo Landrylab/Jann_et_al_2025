@@ -17,6 +17,8 @@ import matplotlib.cm as cm
 from matplotlib.colors import ListedColormap
 from matplotlib.ticker import FixedLocator
 from matplotlib.font_manager import FontProperties
+import matplotlib as mpl
+mpl.rcdefaults()
 
 # Change working directory to the script folder
 script_dir = os.path.dirname(os.path.abspath(__file__))
@@ -183,7 +185,7 @@ for start in range(0, num_fragments, nplot):
     
         # Adjust axis labels
         ax.set_yticks(np.arange(len(df_subset.index)) + 0.5)
-        ax.set_yticklabels(df_subset.index, rotation=0)
+        ax.set_yticklabels(df_subset.index, rotation=0, fontproperties=FontProperties(family="monospace"))
     
         xtick_positions = list(range(0, len(df_subset.columns), 14))
         last_pos = int(len(df_subset.columns) - 1)
@@ -282,7 +284,7 @@ for start in range(0, num_fragments, nplot):
     
         # Adjust axis labels
         ax.set_yticks(np.arange(len(df_subset.index)) + 0.5)
-        ax.set_yticklabels(df_subset.index, rotation=0)
+        ax.set_yticklabels(df_subset.index, rotation=0, fontproperties=FontProperties(family="monospace"))
     
         xtick_positions = list(range(0, len(df_subset.columns), 14))
         last_pos = int(len(df_subset.columns) - 1)
